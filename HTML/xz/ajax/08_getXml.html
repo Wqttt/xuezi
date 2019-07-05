@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>08_getXml</title>
+ </head>
+ <body>
+		<div id="d1"></div>
+		<button onclick="getXML()">获取xml</button>
+		<script>
+			function getXML(){
+				//1.获得xhr异步对象
+				var xhr=new XMLHttpRequest();
+				//4.绑定监听，获取响应
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4 && xhr.status==200){
+						var result=xhr.responseXML;
+						console.log(typeof(result));
+						//对result做dom操作
+						var stuList=result.getElementsByTagName("studentlist")[0];
+						console.log(stuList);
+						var stu=result.getElementsByTagName("student")[1];
+						console.log(stu);
+						var name=stu.getElementsByTagName("name")[0];
+						d1.innerHTML=name.innerHTML;
+					}
+				}
+				//2.创建请求，打开连接
+				xhr.open("get","stu.xml",true);
+				//3.发送请求
+				xhr.send();
+			}
+		</script>
+ </body>
+</html>

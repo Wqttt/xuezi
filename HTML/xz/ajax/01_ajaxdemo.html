@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>01_ajaxdemo</title>
+</head>
+<body onload="getXHR()">
+	<script>
+		function getXHR(){
+			//1.获取异步对象
+			var xhr=new XMLHttpRequest();
+			console.log(xhr);
+			//4.绑定监听，获取响应数据
+			xhr.onreadystatechange=function(){
+				//console.log(xhr.readyState);
+				if(xhr.readyState===4 && xhr.status===200){
+					//接收响应数据
+					var result=xhr.responseText;
+					console.log(result);
+				}
+			}
+			//2.创建请求，打开连接
+			xhr.open("get","http://127.0.0.1:8080/api/ajaxDemo",true);
+			//3.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

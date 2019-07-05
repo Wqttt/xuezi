@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>06_post_login</title>
+</head>
+<body>
+	用户名：<input type="text" id="uname"/><br/>
+	密码：<input type="password" id="upwd"/><br/>
+	<button onclick="login_post()">登录</button>
+	<script>
+		function login_post(){
+			//1.获取xhr异步对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，获取响应
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					alert(result);
+				}
+			}
+			//2.打开连接，创建请求
+			xhr.open("post","/api/v1/login",true);
+			//3.发送请求
+			//3.1设置请求头
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+			var formdata="uname="+uname.value+"&upwd="+upwd.value;
+			xhr.send(formdata);
+		}
+	</script>
+</body>
+</html>

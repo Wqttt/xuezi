@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>07_user_list</title>
+</head>
+<body onload="show()">
+	<div id="d1"></div>
+	<button>显示所有用户</button>
+	<script>
+		function show(){
+			//1.获取xhr异步对象
+			var xhr=new XMLHttpRequest();
+			console.log(xhr);
+			//4.绑定监听，获取响应
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					d1.innerHTML=result;
+					//alert(typeof result);//string
+					//json解析
+					var arr=JSON.parse(result);
+					console.log(arr);
+					//js对象放入表格中
+					var html="<table border='1px'>";
+					html+=`
+						<tr>
+							<th>登录名称</th>
+							<th>电子邮箱</th>
+							<th>联系方式</th>
+							<th>真实姓名</th>
+							<th>用户性别</th>
+							<th>操作</th>
+						</tr>
+					`;
+					for(var i=0;i<arr.length;i++){
+						html+=`
+							<tr>
+								<td>${arr[i].uname}</td>
+								<td>${arr[i].email}</td>
+								<td>${arr[i].phone}</td>
+								<td>${arr[i].user_name}</td>
+							`;
+						/*var g=arr[i].gender;
+						if(g==1){
+							g="男";
+						}else if(g==0){
+							g="女";
+						}else{
+							g="不详";
+						}*/
+						var g=arr[i].gender==1?"男":"女";
+						html+=`
+								<td>${g}</td>
+								<td>
+									<a href="">删除</a>
+									<a href="">修改</a>
+								</td>
+							</tr>
+						`
+					}
+					html+="</table>";
+					d1.innerHTML=html;
+				}
+			}
+			//2.创建请求，打开连接
+			xhr.open("get","/api/userlist",true);
+			//3.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>02_ajax</title>
+</head>
+<body>
+	<div id="d1"></div>
+	<button onclick="show()">显示</button>
+	<script>
+		function show(){
+			//1.获取xhr异步对象
+			var xhr=new XMLHttpRequest();
+			console.log(xhr);
+			//4.绑定监听，获取响应数据
+			xhr.onreadystatechange=function(){
+				//console.log(xhr.readyState);
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					//console.log(result);
+					d1.innerHTML="<h1>"+result+"</h1>";
+					console.log(xhr.responseURL);
+				}
+			}
+			//2.创建请求，打开连接
+			xhr.open("get","api/myajax",true);
+			//3.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>04_updateuser</title>
+</head>
+ <body onload="queryUser()">
+<!-- 	用户ID：<input type="text" id="uid" placeholder="请输入您的用户编号"> -->
+<!-- 	<button onclick="queryUser()">查询</button><br> -->
+	用户名称：<input type="text" id="uname"><br>
+	用户邮箱：<input type="text" id="email"><br>
+	联系方式：<input type="text" id="phone"><br>
+	真实姓名：<input type="text" id="user_name"><br>
+	用户性别：<input type="radio" id="m" value="1" name="gender">
+	          <label for="m">男</label>
+						<input type="radio" id="f" value="0" name="gender">
+	          <label for="f">女</label><br>
+						<button onclick="updateUser()">修改</button>
+	<script>
+		function updateUser(){
+			//put与post需要请求主体
+			//获取页面上所有信息
+			//获取url中?后面的参数
+			var urlPar=new URLSearchParams(location.search);
+			//获取前面一页传递过来的uid
+			var $uid=urlPar.get("uid");
+			//uname email phone user_name
+			var $uname=uname.value;
+			var $email=email.value;
+			var $phone=phone.value;
+			var $user_name=user_name.value;
+			var $gender="";
+			//如何获取性别gender
+			if(m.checked){
+				$gender="1";
+			}else{
+				$gender="0";
+			}
+			//1.获取xhr异步对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，获取响应
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					if(result==1){
+						alert("修改成功");
+						//跳转到用户列表页面
+						window.location.href="http://127.0.0.1:8080/02_userlist.html";
+					}else{
+						alert("修改失败");
+					}
+				}
+			}
+			//2.创建请求，打开连接
+			xhr.open("put","/mypro/v1/updateuser",true);
+			//3.发送请求
+			//3.1设置请求头
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+			var formdata="uname="+$uname+"&email="+$email+"&phone="+$phone+"&user_name="+$user_name+"&gender="+$gender+"&uid="+$uid;
+			xhr.send(formdata);
+		}
+
+		function queryUser(){
+			//获取url中?后面的参数
+			var urlPar=new URLSearchParams(location.search);
+			//获取前面一页传递过来的uid
+			var uid=urlPar.get("uid");
+			//1.获取xhr异步对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，获取响应
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					console.log(result);
+					var obj_u=JSON.parse(result)[0];
+					console.log(obj_u);
+					uname.value=obj_u.uname;
+					email.value=obj_u.email;
+					phone.value=obj_u.phone;
+					user_name.value=obj_u.user_name;
+					//性别在单选框中显示
+					if(obj_u.gender==1){
+						m.checked=true;
+					}else{
+						f.checked=true;
+					}
+				}
+			}
+			//2.创建请求，打开连接
+			xhr.open("get","/mypro/v1/queryuser/"+uid,true);
+			//3.发送请求
+			xhr.send();
+		}
+	</script>
+ </body>
+</html>

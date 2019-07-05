@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>04_get_login</title>
+</head>
+<body>
+	用户名：<input type="text" id="uname"/><br/>
+	密码：<input type="password" id="upwd"/><br/>
+	<button onclick="login()">登录</button>
+	<script>
+		function login(){
+			//1.获取异步对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，获取响应数据
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					if(result==1){
+						alert("登录成功");
+					}else if(result==0){
+						alert("用户名或者密码错误");
+					}else{
+						alert(result);
+					}
+				}
+			}
+			//2.创建请求
+			xhr.open("get","/api/v2/login?uname="+uname.value+"&upwd="+upwd.value,true);
+			//3.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

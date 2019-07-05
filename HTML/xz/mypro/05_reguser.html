@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>05_reguser</title>
+</head>
+<body>
+	用户编号：<input type="text" id="uid" onfocus="msg_uid()" onblur="check_uid()">
+	<span id="ms1"></span><br>
+	用户名称：<input type="text" id="uname"  onfocus="msg_uname()" onblur="check_uname()">
+	<span id="ms2"></span><br>
+	用户密码：<input type="password" id="upwd"  onfocus="msg_upwd()" onblur="check_upwd()">
+	<span id="ms3"></span><br>
+	用户邮箱：<input type="text" id="email" onfocus="msg_email()" onblur="check_email()">
+	<span id="ms4"></span><br>
+	联系方式：<input type="text" id="phone" onfocus="msg_phone()" onblur="check_phone()">
+	<span id="ms5"></span><br>
+	用户头像：<input type="text" id="avatar"><br>
+	真实姓名：<input type="text" id="user_name"><br>
+	用户性别：<input type="radio" id="m" value="1" name="gender">
+	          <label for="m">男</label>
+						<input type="radio" id="f" value="0" name="gender">
+	          <label for="f">女</label><br>
+						<button onclick="regUser()">注册</button>
+	<script>
+		function regUser(){
+			var $uid=uid.value;
+			var $uname=uname.value;
+			var $upwd=upwd.value;
+			var $email=email.value;
+			var $phone=phone.value;
+			var $avatar=avatar.value;
+			var $user_name=user_name.value;
+			var $gender="";
+			//如何获取性别gender
+			if(m.checked){
+				$gender="1";
+			}else{
+				$gender="0";
+			}
+			//1.获取xhr异步对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，获取响应
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					//alert(result);
+					if(result==1){
+						alert("注册成功");
+					}else{
+						alert("注册失败");
+					}
+				}
+			}
+			//2.创建请求，打开连接
+			xhr.open("post","/mypro/v1/reguser",true);
+			//3.发送请求
+			//3.1设置请求头
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			var formdata="uid="+$uid+"&uname="+$uname+"&upwd="+$upwd+"&email="+$email+"&phone="+$phone+"&avatar="+$avatar+"&user_name="+$user_name+"&gender="+$gender;
+			xhr.send(formdata);
+		}
+	</script>
+</body>
+</html>
